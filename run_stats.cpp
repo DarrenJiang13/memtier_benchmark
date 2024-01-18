@@ -1418,6 +1418,7 @@ void run_stats::print(FILE *out, benchmark_config *config,
         print_histogram(out, jsonhandler, *config->arbitrary_commands);
     }
 
+
     // This close_nesting closes either:
     //      jsonhandler->open_nesting(header); or
     //      jsonhandler->open_nesting("UNKNOWN STATS");
