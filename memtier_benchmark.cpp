@@ -1628,21 +1628,25 @@ int main(int argc, char *argv[])
         }
         //
         // Print some run information
-        unsigned int sent_cmd_count =  cfg.threads * cfg.clients * (cfg.requests > 0 ? cfg.requests : cfg.test_time);
-        unsigned int received_cmd_count = total_ops;
+        unsigned long int count_total_ops = 0;
+        for (std::vector<run_stats>::iterator i = all_stats.begin(); i != all_stats.end(); i++) {
+            count_total_ops += i->get_total_ops();
+        }
+        unsigned long int sent_cmd_count =  cfg.threads * cfg.clients * (cfg.requests > 0 ? cfg.requests : cfg.test_time);
+        unsigned long int received_cmd_count = count_total_ops;
         fprintf(outfile,
                 "%-9u Threads\n"
                 "%-9u Connections per thread\n"
-                "%-9llu %s\n",
-                "%-9u commands sent\n",
-                "%-9u commands received\n",
-                "%-9u% data miss ratio\n"
+                "%-9llu %s\n"
+                "%-9lu commands sent\n"
+                "%-9lu commands received\n"
+                "%.2f%% data miss ratio\n",
                 cfg.threads, cfg.clients,
                 (unsigned long long) (cfg.requests > 0 ? cfg.requests : cfg.test_time),
                 cfg.requests > 0 ? "Requests per client" : "Seconds",
-                sent_cmds_count,
-                total_ops,
-                double(sent_cmds_count/total_ops)*100
+                sent_cmd_count,
+                received_cmd_count,
+                double(1-received_cmd_count / sent_cmd_count) * 100
         );
 
         if (jsonhandler != NULL){
