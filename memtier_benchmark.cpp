@@ -1392,8 +1392,6 @@ int main(int argc, char *argv[])
             SSL_CTX_set_options(cfg.openssl_ctx, SSL_OP_NO_TLSv1_1);
         if (!(cfg.tls_protocols & REDIS_TLS_PROTO_TLSv1_2))
             SSL_CTX_set_options(cfg.openssl_ctx, SSL_OP_NO_TLSv1_2);
-        if (!(cfg.tls_protocols & REDIS_TLS_PROTO_TLSv1_3))
-            SSL_CTX_set_options(cfg.openssl_ctx, SSL_OP_NO_TLSv1_3);
 
         if (cfg.tls_cert) {
             if (!SSL_CTX_use_certificate_chain_file(cfg.openssl_ctx, cfg.tls_cert)) {
