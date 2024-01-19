@@ -1630,13 +1630,22 @@ int main(int argc, char *argv[])
         }
         //
         // Print some run information
+        unsigned int sent_cmd_count =  cfg.threads * cfg.clients * (cfg.requests > 0 ? cfg.requests : cfg.test_time);
+        unsigned int received_cmd_count = total_ops;
         fprintf(outfile,
-               "%-9u Threads\n"
-               "%-9u Connections per thread\n"
-               "%-9llu %s\n",
-               cfg.threads, cfg.clients,
-               (unsigned long long)(cfg.requests > 0 ? cfg.requests : cfg.test_time),
-               cfg.requests > 0 ? "Requests per client"  : "Seconds");
+                "%-9u Threads\n"
+                "%-9u Connections per thread\n"
+                "%-9llu %s\n",
+                "%-9u commands sent\n",
+                "%-9u commands received\n",
+                "%-9u% data miss ratio\n"
+                cfg.threads, cfg.clients,
+                (unsigned long long) (cfg.requests > 0 ? cfg.requests : cfg.test_time),
+                cfg.requests > 0 ? "Requests per client" : "Seconds",
+                sent_cmds_count,
+                total_ops,
+                double(sent_cmds_count/total_ops)*100
+        );
 
         if (jsonhandler != NULL){
             jsonhandler->open_nesting("run information");
