@@ -1632,7 +1632,7 @@ int main(int argc, char *argv[])
         for (std::vector<run_stats>::iterator i = all_stats.begin(); i != all_stats.end(); i++) {
             count_total_ops += i->get_total_ops();
         }
-        unsigned long int sent_cmd_count =  cfg.threads * cfg.clients * (cfg.requests > 0 ? cfg.requests : cfg.test_time);
+        unsigned long int sent_cmd_count =  cfg.threads * cfg.clients * cfg.requests;
         unsigned long int received_cmd_count = count_total_ops;
         fprintf(outfile,
                 "%-9u Threads\n"
