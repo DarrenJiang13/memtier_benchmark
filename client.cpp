@@ -47,6 +47,7 @@
 #include <math.h>
 #include <algorithm>
 #include <arpa/inet.h>
+#include <time.h>
 
 #include "client.h"
 #include "cluster_client.h"
@@ -436,8 +437,14 @@ int client::prepare(void)
 void client::handle_response(unsigned int conn_id, struct timeval timestamp,
                              request *request, protocol_response *response)
 {
+    time_t currentTime;
+    struct tm *localTime;
     if (response->is_error()) {
-        benchmark_error_log("server %s handle error response: %s\n",
+        currentTime = time(NULL);
+        localTime = localtime(&currentTime);
+        benchmark_error_log("%d-%02d-%02d %02d:%02d:%02d, server %s handle error response: %s\n",
+                            localTime->tm_year + 1900, localTime->tm_mon + 1, localTime->tm_mday,
+                            localTime->tm_hour, localTime->tm_min, localTime->tm_sec,
                             m_connections[conn_id]->get_readable_id(),
                             response->get_status());
     }
